@@ -482,12 +482,24 @@ export interface Explorer {
      * Pattern to icon group
      */
     patternMatches?: unknown[];
+    /**
+     * Hide items by extension if they have another (ie. hide compiled .js if .ts exists)
+     */
+    conditional?: {
+      hide?: string[];
+      if?: string[];
+      [k: string]: unknown;
+    }[];
     [k: string]: unknown;
   };
   /**
    * Default show hidden files
    */
   'explorer.file.showHiddenFiles'?: boolean;
+  /**
+   * Default order to sort files
+   */
+  'explorer.file.sortBy'?: 'default' | 'alphabetical' | 'byFileExtension';
   /**
    * Template for root node of file source
    */

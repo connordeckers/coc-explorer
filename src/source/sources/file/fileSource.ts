@@ -449,14 +449,22 @@ export class FileSource extends ExplorerSource<FileNode> {
     return [foundNode, notifiers];
   }
 
-  sortFiles(files: FileNode[]) {
+  sortFiles(
+    files: FileNode[],
+    sortBy: 'default' | 'alphabetical' | 'byFileExtension' = 'default',
+  ) {
+    const ext = (file: FileNode): string => file.name.split('.').at(-1) ?? '';
+
     return files.sort((a, b) => {
       if (a.directory && !b.directory) {
         return -1;
       } else if (b.directory && !a.directory) {
         return 1;
       } else {
-        return a.name.localeCompare(b.name);
+        if (sortBy == 'byFileExtension') {
+          if (ext(a) == ext(b)) return a.name.localeCompare(b.name);
+          else return ext(a)?.localeCompare(ext(b));
+        } else return a.name.localeCompare(b.name);
       }
     });
   }
@@ -518,7 +526,10 @@ export class FileSource extends ExplorerSource<FileNode> {
       }),
     );
 
-    return this.sortFiles(files.filter((r): r is FileNode => !!r));
+    return this.sortFiles(
+      files.filter((r): r is FileNode => !!r),
+      this.config.get('file.sortBy'),
+    );
   }
 }
 

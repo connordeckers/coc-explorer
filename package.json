@@ -951,6 +951,20 @@
           "type": "boolean",
           "default": false
         },
+        "explorer.file.sortBy": {
+          "description": "Default order to sort files",
+          "enumDescriptions": [
+            "Default sort order (alphabetical)",
+            "Default sort order (alphabetical)",
+            "By file extension, then by alphabetical order"
+          ],
+          "enum": [
+            "default",
+            "alphabetical",
+            "byFileExtension"
+          ],
+          "default": "default"
+        },
         "explorer.file.root.template": {
           "description": "Template for root node of file source",
           "type": "string",

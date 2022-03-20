@@ -1132,6 +1132,14 @@ Type: <pre><code>{
      * Pattern to icon group
      */
     patternMatches?: unknown[];
+    /**
+     * Hide items by extension if they have another (ie. hide compiled .js if .ts exists)
+     */
+    conditional?: {
+        hide?: string[];
+        if?: string[];
+        [k: string]: unknown;
+    }[];
     [k: string]: unknown;
 }</code></pre>Default: <pre><code>{
   "extensions": [
@@ -1143,12 +1151,17 @@ Type: <pre><code>{
   "filenames": [],
   "patternMatches": [
     "^\\."
-  ]
+  ],
+  "conditional": []
 }</code></pre>
 </details>
 <details>
 <summary><code>explorer.file.showHiddenFiles</code>: Default show hidden files.</summary>
 Type: <pre><code>boolean</code></pre>Default: <pre><code>false</code></pre>
+</details>
+<details>
+<summary><code>explorer.file.sortBy</code>: Default order to sort files.</summary>
+Type: <pre><code>'default' | 'alphabetical' | 'byFileExtension'</code></pre>Default: <pre><code>"default"</code></pre>
 </details>
 <details>
 <summary><code>explorer.file.root.template</code>: Template for root node of file source.</summary>
