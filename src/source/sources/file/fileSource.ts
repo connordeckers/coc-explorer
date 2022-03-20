@@ -126,10 +126,11 @@ export class FileSource extends ExplorerSource<FileNode> {
       extensions: string[];
       filenames: string[];
       patternMatches: string[];
+      conditional?: { hide: string[]; if: string[] }[];
     }>('file.hiddenRules')!;
   }
 
-  isHidden(filename: string) {
+  isHidden(filename: string, files: string[]) {
     const hiddenRules = this.getHiddenRules();
 
     const { basename, extensions } = getExtensions(filename);
@@ -138,6 +139,16 @@ export class FileSource extends ExplorerSource<FileNode> {
     return (
       hiddenRules.filenames.includes(basename) ||
       hiddenRules.extensions.includes(extname) ||
+      hiddenRules.conditional?.some((pattern) => {
+        const extMatches = pattern.hide.includes(extname);
+        if (extMatches) {
+          return files.some((file) => {
+            const { basename: base, extensions } = getExtensions(file);
+            const extname = extensions[extensions.length - 1];
+            return basename == base && pattern.if.includes(extname);
+          });
+        }
+      }) ||
       hiddenRules.patternMatches.some((pattern) =>
         new RegExp(pattern).test(filename),
       )
@@ -458,7 +469,7 @@ export class FileSource extends ExplorerSource<FileNode> {
       filenames = await fsReaddir(parentNode.fullpath);
     }
     const files = await Promise.all(
-      filenames.map(async (filename) => {
+      filenames.map(async (filename, _, files) => {
         try {
           if (
             this.showOnlyGitChange &&
@@ -467,7 +478,7 @@ export class FileSource extends ExplorerSource<FileNode> {
             return;
           }
 
-          const hidden = this.isHidden(filename);
+          const hidden = this.isHidden(filename, files);
           if (!this.showHidden && hidden) {
             return;
           }

@@ -903,7 +903,8 @@
             "filenames": [],
             "patternMatches": [
               "^\\."
-            ]
+            ],
+            "conditional": []
           },
           "properties": {
             "extensions": {
@@ -921,6 +922,27 @@
             "patternMatches": {
               "type": "array",
               "description": "Pattern to icon group"
+            },
+            "conditional": {
+              "type": "array",
+              "description": "Hide items by extension if they have another (ie. hide compiled .js if .ts exists)",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "hide": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "if": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
             }
           }
         },
