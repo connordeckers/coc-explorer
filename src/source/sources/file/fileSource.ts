@@ -145,6 +145,8 @@ export class FileSource extends ExplorerSource<FileNode> {
           return files.some((file) => {
             const { basename: base, extensions } = getExtensions(file);
             const extname = extensions[extensions.length - 1];
+
+            console.log({ base, basename });
             return basename == base && pattern.if.includes(extname);
           });
         }
